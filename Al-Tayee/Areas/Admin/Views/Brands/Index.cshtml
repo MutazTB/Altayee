@@ -1,0 +1,237 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+
+<!--begin::Page Vendors Styles(used by this page) -->
+<link href="~/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+
+<div id="Add_Edit_Brand" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid" style="display:none">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!--begin::Portlet-->
+            <div class="kt-portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Add New Brand
+                        </h3>
+                    </div>
+                </div>
+
+                <!--begin::Form-->
+                <form id="BrandForm" class="kt-form kt-form--label-right">
+                    <div class="kt-portlet__body">
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Brand Name English:</label>
+                                <input type="text" id="BrandNameEntxt" class="form-control req" placeholder="Enter english name">
+                                <span class="spnreq" id="BrandNameEntxtreq" style="display:none;">The english name is Required</span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="">Brand Name Arabic:</label>
+                                <input type="text" id="BrandNameArtxt" class="form-control req" placeholder="Enter arabic number">
+                                <span class="spnreq" id="BrandNameArtxtreq" style="display:none;">The arabic name is Required</span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label>Brand Logo:</label>
+                                <input type="file" id="BrandLogoFile" class="form-control" >
+                                <span class="spnreq" id="BrandLogoFilereq" style="display:none;">Image is Required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button type="reset" id="Savebtn" class="btn btn-primary">Save</button>
+                                    <button type="reset" id="Cancelbtn" class="btn btn-secondary">Cancel</button>
+                                </div>
+                                <div class="col-lg-6 kt-align-right">
+                                    <button type="reset" id="Deletebtn" class="btn btn-danger">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!--end::Form-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+            <div class="kt-portlet__head-label">
+                <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                </span>
+                <h3 class="kt-portlet__head-title">
+                    Brands
+                </h3>
+            </div>
+            <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                        <div class="dropdown dropdown-inline">
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <ul class="kt-nav">
+                                    <li class="kt-nav__section kt-nav__section--first">
+                                        <span class="kt-nav__section-text">Choose an option</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <a href="#" id="Add_Edit_Brandsbtn" class="btn btn-brand btn-elevate btn-icon-sm">
+                            <i class="la la-plus"></i>
+                            New Record
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="kt-portlet__body">
+
+            <!--begin: Datatable -->
+            <table class="table table-striped- table-bordered table-hover table-checkable" id="kt_table_1">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name English</th>
+                        <th>Name Arabic</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Image</td>
+                        <td>Brand</td>
+                        <td>براند</td>
+                        <td nowrap></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--end: Datatable -->
+        </div>
+    </div>
+</div>
+@*<script src="~/areas/admin/models/brands/brands.js"></script>*@
+@*<script src="~/js/brands/brands.js"></script>*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!--end::Global Theme Bundle -->
+<!--begin::Page Vendors(used by this page) -->
+<script src="~/plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
+
+<!--end::Page Vendors -->
+<!--begin::Page Scripts(used by this page) -->
+<script src="~/js/pages/crud/datatables/advanced/column-rendering.js" type="text/javascript"></script>
+
+<script>
+    $(function () {
+        alert();
+        GetAllData();
+    });
+    function GetAllData() {
+        alert();
+        $.ajax({
+            url: "/Brands/GetAllBrands",
+            type: "GET",
+                success: function (data) {
+                swal("Success", data.Message, "success");
+                $("#Add_Edit_Brand").slideup();
+            },
+            error: function (err) {
+                swal('Oops...', 'Something went wrong!', 'error');
+            }
+        })
+    }
+</script>
+<script>
+    
+    function uuidv4() {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+    var imagesToUpload = []
+    $(document).on("click", "#Add_Edit_Brandsbtn", function () {
+        $("#Add_Edit_Brand").slideDown('slow');
+    });
+    $("#BrandLogoFile").change(function (event) {
+        $.each(this.files, function (i, item) {
+            imagesToUpload.push(item)
+        });
+        $(this).val(null);        
+    })
+    var BrandEnName = $("#BrandNameEntxt").val();
+    var BrandArName = $("#BrandNameArtxt").val();
+    var form = new FormData();
+    var Image;
+    $(document).on("click", "#Savebtn", function () {  
+        let valid = true;
+        $('.spnreq').hide();
+        $('.req').each(function () {
+            if ($(this).val() === "" || $(this).val().trim() === ""){                
+                $('#' + $(this).attr('id') + 'req').show();
+                valid = false;
+            }
+        })
+        if (imagesToUpload.length == 0) {
+            valid = false;
+            $('#BrandLogoFilereq').show();
+        }        
+        if(valid == true){
+            $.each(imagesToUpload, function (i, item) {
+                var guid = uuidv4();
+                Image = "img_" + i + item.name + guid;;
+                item.FileName = Image;
+                form.append("Images", item);
+            })
+            $.ajax({
+                url: "/Brands/AddImages",
+                type: "POST",
+                data: form,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    var brands = {
+                        NameEn: BrandEnName,
+                        NameAr: BrandArName,
+                        Image: result
+                    };
+                    $.ajax({
+                        url: "/Brands/AddBrand",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(brands),
+                        success: function (data) {
+                            swal("Success", data.Message, "success");
+                            $("#Add_Edit_Brand").slideup();
+                        },
+                        error: function (err) {
+                            swal('Oops...', 'Something went wrong!', 'error');
+                        }
+                    })
+                },
+                error: function (xhr, status, error) {
+                    // Handle any errors that occur during the AJAX request
+                }
+            });
+        }
+    });
+    $(document).on("click", "#Cancelbtn", function () {
+    $("#Add_Edit_Brand").slideUp();
+    });
+    $(document).on("click", "#Deletebtn", function () {
+        $("#BrandNameEntxt").val(null);
+        $("#BrandNameArtxt").val(null);
+        imagesToUpload = [];
+        //$("#Add_Edit_Brand").slideUp();
+    });
+</script>
